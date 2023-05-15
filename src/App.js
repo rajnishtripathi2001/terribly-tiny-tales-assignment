@@ -10,15 +10,25 @@ function App() {
   const [active, setactive] = useState(false);
   const [words, setWords] = useState([]);
   const [count, setCount] = useState([]);
-
-  const finalArray = [];
   const wordList = [];
   const wordcount = [];
+  const headers = [
+    { label: "Word", key: "Word" },
+    { label: "Count", key: "Count" },
+  ];
 
-  const headers =[
-    {label: 'Word', key: 'Word'},
-    {label: 'Count', key: 'Count'}
-  ]
+  const fetchContent = () => {
+    axios
+      .get("https://www.terriblytinytales.com/test.txt")
+      .then((response) => {
+        const words = cleanUpText(response.data);
+        setContent(words);
+        frequency();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const cleanUpText = (text) => {
     const cleanedText = text.toLowerCase();
@@ -39,9 +49,9 @@ function App() {
     sorted(wordCount);
   };
 
-  const sorted = (dict) => {
-    var items = Object.keys(dict).map((key) => {
-      return [key, dict[key]];
+  const sorted = (data) => {
+    var items = Object.keys(data).map((key) => {
+      return [key, data[key]];
     });
 
     items.sort((first, second) => {
@@ -52,31 +62,13 @@ function App() {
     var i = 0;
 
     for (i = 0; i < 20; i++) {
-      finalArray.push(items[i]);
       wordList.push(items[i][0]);
       wordcount.push(items[i][1]);
     }
 
-    // console.log(finalArray);
-    // console.log(wordList);
-    // console.log(wordcount);
-
     setactive(true);
     setWords(wordList);
     setCount(wordcount);
-  };
-
-  const fetchContent = () => {
-    axios
-      .get("https://www.terriblytinytales.com/test.txt")
-      .then((response) => {
-        const words = cleanUpText(response.data);
-        setContent(words);
-        frequency();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   const objectsArray = words.map((elem, index) => ({
@@ -84,17 +76,11 @@ function App() {
     Count: count[index],
   }));
 
-  // const exportData = () => {
-  //   console.log(words);
-  //   console.log(count);
-  //   console.log(objectsArray);
-  // };
-
   const csvReport = {
     data: objectsArray,
     headers: headers,
-    filename: 'WordFrequency.csv'
-  }
+    filename: "WordFrequency.csv",
+  };
 
   return (
     <div className="main-container">

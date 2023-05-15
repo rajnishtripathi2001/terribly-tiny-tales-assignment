@@ -1,40 +1,61 @@
-.App {
-  text-align: center;
-}
-
-.main-container{
-  width: 100%;
-  height: 100%;
+.main-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 50x;
 }
 
-.btns{
-  width: 7%;
-  margin: 20px;
-  height: 2vw;
-  border-radius: 25px;
-  font-weight: 600;
+h3 {
+  font-size: 30px;
+  margin-bottom: 20px;
 }
 
-.chart-container{
+.btns {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+
+.btns:hover {
+  background-color: #0069d9;
+}
+
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
   width: 500px;
   height: 500px;
-  margin: 0 auto;
-  position: relative;
-  text-align: center;
 }
 
-.btns2{
-  width: fit-content;
-  margin: 20px;
-  height: 2.5vw;
-  border-radius: 25px;
+.btns2 {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #28a745;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .btns2 a{
   text-decoration: none;
-  color: black;
-  font-weight: 600;
+  color: #fff;
+}
+
+.btns2:hover {
+  background-color: #218838;
+}
+
+p {
+  font-size: 18px;
+  margin-top: 20px;
+  text-align: center;
 }
