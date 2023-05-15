@@ -1,7 +1,8 @@
 # Assignment Submission for Terribly Tiny Tales
 ## Author: Rajnish Tripathi
 ## Date: 16/05/2023
-## Description: ### This is a simple web application which reads a website data as input and returns the top 20 most frequent words in the string along with their frequency. Also it plots a histogram of the 20 most occurring words and provide an Export Button to Download Data in CSV File.
+## Description: 
+### This is a simple web application which reads a website data as input and returns the top 20 most frequent words in the string along with their frequency. Also it plots a histogram of the 20 most occurring words and provide an Export Button to Download Data in CSV File.
 ### Language: JavaScript, CSS, HTML
 ### Framework: Reactjs
 ### Libraries: React-Chartjs-2, Axios, React-CSV
