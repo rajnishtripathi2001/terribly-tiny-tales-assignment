@@ -1,23 +1,137 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import axios from "axios";
+import { Bar } from "react-chartjs-2";
+import { Chart as ChartJS } from "chart.js/auto";
+import { CSVLink } from "react-csv";
 
 function App() {
+  const [content, setContent] = useState();
+  const [active, setactive] = useState(false);
+  const [words, setWords] = useState([]);
+  const [count, setCount] = useState([]);
+
+  const finalArray = [];
+  const wordList = [];
+  const wordcount = [];
+
+  const headers =[
+    {label: 'Word', key: 'Word'},
+    {label: 'Count', key: 'Count'}
+  ]
+
+  const cleanUpText = (text) => {
+    const cleanedText = text.toLowerCase();
+    const result = cleanedText.replace(/[\W_]+/g, " ");
+    return result;
+  };
+
+  const frequency = () => {
+    const words = content.split(" ");
+    const wordCount = {};
+    words.forEach((word) => {
+      if (wordCount[word]) {
+        wordCount[word] += 1;
+      } else {
+        wordCount[word] = 1;
+      }
+    });
+    sorted(wordCount);
+  };
+
+  const sorted = (dict) => {
+    var items = Object.keys(dict).map((key) => {
+      return [key, dict[key]];
+    });
+
+    items.sort((first, second) => {
+      return first[1] - second[1];
+    });
+
+    items.reverse();
+    var i = 0;
+
+    for (i = 0; i < 20; i++) {
+      finalArray.push(items[i]);
+      wordList.push(items[i][0]);
+      wordcount.push(items[i][1]);
+    }
+
+    // console.log(finalArray);
+    // console.log(wordList);
+    // console.log(wordcount);
+
+    setactive(true);
+    setWords(wordList);
+    setCount(wordcount);
+  };
+
+  const fetchContent = () => {
+    axios
+      .get("https://www.terriblytinytales.com/test.txt")
+      .then((response) => {
+        const words = cleanUpText(response.data);
+        setContent(words);
+        frequency();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const objectsArray = words.map((elem, index) => ({
+    Word: elem,
+    Count: count[index],
+  }));
+
+  // const exportData = () => {
+  //   console.log(words);
+  //   console.log(count);
+  //   console.log(objectsArray);
+  // };
+
+  const csvReport = {
+    data: objectsArray,
+    headers: headers,
+    filename: 'WordFrequency.csv'
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="main-container">
+      <h3>TERRIBLY TINY TALES Assignment</h3>
+      <button className="btns" onClick={fetchContent}>
+        Submit
+      </button>
+      <div className="chart-container">
+        {active ? (
+          <>
+            <Bar
+              data={{
+                labels: words,
+                datasets: [
+                  {
+                    label: "Word Frequency",
+                    data: count,
+                    borderWidth: 0,
+                    barPercentage: 1,
+                    categoryPercentage: 1,
+                  },
+                ],
+              }}
+              options={{
+                maintainAspectRatio: false,
+              }}
+              height={200}
+              width={300}
+            />
+            <button className="btns2">
+              <CSVLink {...csvReport}>Export Data to CSV</CSVLink>
+            </button>
+          </>
+        ) : (
+          <p>Click on submit button to get the data</p>
+        )}
+      </div>
     </div>
   );
 }
